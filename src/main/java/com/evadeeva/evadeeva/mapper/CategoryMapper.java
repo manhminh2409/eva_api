@@ -3,6 +3,7 @@ package com.evadeeva.evadeeva.mapper;
 import com.evadeeva.evadeeva.models.Category;
 import com.evadeeva.evadeeva.models.dtos.CategoryDto;
 import com.evadeeva.evadeeva.web.dto.request.CategoryRequest;
+import com.evadeeva.evadeeva.web.dto.response.CategoryResponse;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -11,6 +12,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import java.util.List;
 @Mapper
 public interface CategoryMapper {
+	//Map model to response
+	CategoryResponse mapModelToResponse(Category category);
 
 		// mapper one model to dto
 		CategoryDto mapModelToDTO(Category category);

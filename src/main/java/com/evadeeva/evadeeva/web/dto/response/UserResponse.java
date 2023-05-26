@@ -23,4 +23,6 @@ public class UserResponse {
     private String image;
 
     private Set<RoleResponse> roles;
+
+    private int status;
 }

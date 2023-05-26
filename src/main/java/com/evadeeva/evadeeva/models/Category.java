@@ -20,17 +20,17 @@ public class Category {
 	@Column(name = "category_id")
 	private long id;
 
-	@Column
-	private Date createdDate;
+	@Column(nullable = false)
+	private String title;
 
 	@Column
 	private String description;
 
 	@Column
-	private Date modifiedDate;
+	private Date createdDate;
 
-	@Column(nullable = false)
-	private String title;
+	@Column
+	private Date modifiedDate;
 
 	@Column(nullable = false)
 	private int status;

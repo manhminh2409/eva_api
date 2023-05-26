@@ -37,19 +37,24 @@ public class AccountRest {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), loginRequest.getPassword()));
+            UserResponse userResponse = userService.findByUserName(loginRequest.getUsername());
+            if (userResponse.getStatus() != 0) {
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(), loginRequest.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            //get token form tokenProvider
-            String token = jwtConfig.generateToken(authentication);
+                //get token form tokenProvider
+                String token = jwtConfig.generateToken(authentication);
 
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setToken(token);
-            loginResponse.setUser(userService.findByUserName(loginRequest.getUsername()));
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setToken(token);
+                loginResponse.setUser(userResponse);
 
-            return ResponseEntity.ok(loginResponse);
+                return ResponseEntity.ok(loginResponse);
+            } else {
+                return new ResponseEntity<>("Tài khoản đã bị khoá!", HttpStatus.BAD_REQUEST);
+            }
         }catch (Exception e){
             return new ResponseEntity<>("Tài khoản hoặc mật khẩu không chính xác!", HttpStatus.BAD_REQUEST);
         }

@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 
 @Configuration
@@ -23,9 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(proxyTargetClass = true)
 public class SecurityConfig {
 
-    @Autowired
     private CustomUserDetailsService userDetailsService;
-    @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
@@ -50,13 +49,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                     .requestMatchers("/api/register").permitAll()
                     .requestMatchers("/api/login").permitAll()
+                    .requestMatchers("/api/category/**").permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
-  
     protected void filterChain(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService((userDetailsService)).passwordEncoder((passwordEncoder()));
     }
