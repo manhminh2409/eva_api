@@ -53,7 +53,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                     .requestMatchers("/api/register").permitAll()
                     .requestMatchers("/api/login").permitAll()
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .requestMatchers("/api/category/**").permitAll()
+                    .requestMatchers("/api/product/**").permitAll()
+                    .requestMatchers("/api/banner/**").permitAll()
+                    .requestMatchers("/api/article/**").permitAll()
+                    .requestMatchers("/api/company/**").permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

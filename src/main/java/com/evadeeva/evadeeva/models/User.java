@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -17,7 +15,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column
     private long id;
 
     @Column(nullable = false)
@@ -57,4 +55,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Address> addresses = new HashSet<>();
+
+    @OneToMany(mappedBy = "productAuthor")
+    private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Company> companies = new ArrayList<>();
 }

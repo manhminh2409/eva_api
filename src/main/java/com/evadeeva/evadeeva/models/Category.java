@@ -17,7 +17,7 @@ import java.util.*;
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "category_id")
+	@Column
 	private long id;
 
 	@Column(nullable = false)
@@ -32,6 +32,9 @@ public class Category {
 	@Column
 	private Date modifiedDate;
 
+	@Column
+	private int type;//xác định là 0: sản phẩm, 1: chính sách, 2: bài viết, 3: tuyển dụng
+
 	@Column(nullable = false)
 	private int status;
 
@@ -44,4 +47,7 @@ public class Category {
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	private Set<Banner> banners = new HashSet<>();
+
+	@OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+	private List<Product> products = new ArrayList<>();
 }

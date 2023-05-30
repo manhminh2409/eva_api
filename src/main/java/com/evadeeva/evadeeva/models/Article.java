@@ -1,51 +1,53 @@
 package com.evadeeva.evadeeva.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
-@SuppressWarnings("serial")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name="article")
-public class Article implements Serializable{
+public class Article {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long article_id;
+	private long id;
 	
-	@Column(name="title")
+	@Column
 	private String title;
+
+	@Column
+	private String titleSummary;
 	
-	@Column(name="content")
+	@Column()
+	@Lob
 	private String content;
+
+	@Column
+	private String tag;
 	
-	@Column(name = "created_date")
-	private String createdDate;
+	@Column
+	private Date createdDate;
 	
-	@Column(name = "modified_date")
-	private String modifiedDate;
+	@Column
+	private Date modifiedDate;
+
+	@Column
+	private int status;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id")
-	User user;
-	
-	@ManyToOne
-	@JoinColumn(name="category_id")
-	Category category;
-	
-	//@JsonIgnore
-	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "article")
-	//List<ArticleComment> listComment;
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "article")
-	List<ArticleImage> listImage;
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+	private List<ArticleImage> articleImages;
 }
 

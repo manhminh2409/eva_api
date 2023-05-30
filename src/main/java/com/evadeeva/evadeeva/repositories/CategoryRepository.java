@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long>{
 	List<Category> findByStatus(int status);
+	List<Category> findAllByStatusAndType(int status, int type);
+	Category findByStatusAndIdAndType(int status, long id, int type);
 
-	Category findByStatusAndId(int status, long id);
 }

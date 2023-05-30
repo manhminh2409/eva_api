@@ -17,7 +17,7 @@ import java.util.Date;
 public class Banner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "banner_id")
+	@Column
 	private long id;
 	
 	@Column(nullable = false)
@@ -35,8 +35,8 @@ public class Banner {
 	@Column(nullable = false)
 	private int status;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "category_id")
 	private Category category;
 	
 }

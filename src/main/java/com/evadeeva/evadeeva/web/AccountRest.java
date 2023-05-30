@@ -66,10 +66,10 @@ public class AccountRest {
             if (userResponse != null) {
                 return ResponseEntity.ok(userResponse);
             } else {
-                return new ResponseEntity<>("Sign up fail!", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Tên tài khoản đã tồn tại!", HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("Fail because Email or other.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email hoặc số điện thoại đã được sử dụng.", HttpStatus.BAD_REQUEST);
         }
     }
 

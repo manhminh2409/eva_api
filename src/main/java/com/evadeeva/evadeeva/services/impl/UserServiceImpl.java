@@ -77,8 +77,7 @@ public class UserServiceImpl implements UserService {
             user.getRoles().add(role);
 
             User user1 = userRepository.save(user);
-            UserResponse userResponse = userMapper.mapModelToResponse(user1);
-            return userResponse;
+            return userMapper.mapModelToResponse(user1);
         }else {
             return null;
         }
