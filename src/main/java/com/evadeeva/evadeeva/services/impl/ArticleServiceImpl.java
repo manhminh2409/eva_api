@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.evadeeva.evadeeva.config.Constants.ACTIVE_STATUS;
-import static com.evadeeva.evadeeva.config.Constants.TYPE_ARTICLE;
+import static com.evadeeva.evadeeva.config.Constants.ARTICLE_TYPE;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -62,7 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleResponse> getArticleByCategory(int pageNo, int pageSize, String sortBy, long categoryId) {
-        Category category = categoryRepository.findByStatusAndIdAndType(ACTIVE_STATUS, categoryId, TYPE_ARTICLE);
+        Category category = categoryRepository.findByStatusAndIdAndType(ACTIVE_STATUS, categoryId, ARTICLE_TYPE);
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 
         Page<Article> articles = articleRepository.findAllByCategoryAndStatus(pageable, category, ACTIVE_STATUS);

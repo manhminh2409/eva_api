@@ -6,7 +6,7 @@ import com.evadeeva.evadeeva.web.dto.request.UserRequest;
 import com.evadeeva.evadeeva.web.dto.response.UserResponse;
 import org.mapstruct.*;
 
-@Mapper
+@Mapper(uses = AddressMapper.class)
 public interface UserMapper {
     /**
      *
@@ -17,6 +17,7 @@ public interface UserMapper {
      *
      */
     @Mapping(target = "roles",source = "roles")
+    @Mapping(target = "addresses", source = "addresses")
     UserResponse mapModelToResponse(User user);
 
     //User mapRequestToModel(UserRequest userRequest);

@@ -53,12 +53,15 @@ public class User {
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    private Set<Address> addresses = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Address> addresses = new ArrayList<>();
 
     @OneToMany(mappedBy = "productAuthor")
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Company> companies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders = new ArrayList<>();
 }

@@ -63,4 +63,13 @@ public class ProductRest {
         }
     }
 
+    @GetMapping("/size/{id}")
+    private ResponseEntity<?> getProductBySize(@PathVariable("id") long sizeId){
+        try {
+            ProductResponse productResponse = productService.getProductBySize(sizeId);
+            return ResponseEntity.ok(Objects.requireNonNullElse(productResponse, "Sản phẩm không tồn tại!"));
+        }catch (Exception e){
+            return new ResponseEntity<>("Lỗi!", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

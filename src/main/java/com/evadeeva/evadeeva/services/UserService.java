@@ -11,14 +11,9 @@ public interface UserService {
      *
      */
     Page<UserResponse> getAllUsers(int pageNumber, int pageSize, String sortBy);
-
-    /**
-     *
-     * Find user by name
-     */
     UserResponse findByUserName(String username);
+    UserResponse getUser(long userId);
     UserResponse registerUser(RegisterRequest registerRequest);
-
     UserResponse updateUser(Long userId, UserRequest userRequest);
 
     UserResponse changePassword(Long userId, PasswordRequest passwordRequest);

@@ -2,6 +2,7 @@ package com.evadeeva.evadeeva.web.dto.response;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -25,4 +26,6 @@ public class UserResponse {
     private Set<RoleResponse> roles;
 
     private int status;
+
+    private List<AddressResponse> addresses;
 }

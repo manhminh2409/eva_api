@@ -10,54 +10,37 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Table(name = "ADDRESS")
-public class Address {
-
+@Entity
+@Table(name = "ORDERS")
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private long id;
 
     @Column
-    private String firstName;
-
-    @Column
-    private String lastName;
-
-    @Column
-    private String phone;
-
-    @Column
-    private String company;
-
-    @Column
-    private String addressDetail;
-
-    @Column
-    private String religion;
-
-    @Column
-    private Date createdDate;
-
-    @Column
-    private Date modifiedDate;
-
-    @Column
-    private int focus;
+    private int type;
 
     @Column
     private int status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Column
+    private Date createDate;
+
+    @Column
+    private Date modifiedDate;
+
+    @OneToMany(mappedBy = "orders", fetch = FetchType.EAGER)
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    @ManyToOne()
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "address")
-    private List<Orders> orders = new ArrayList<>();
 }

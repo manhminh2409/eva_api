@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.evadeeva.evadeeva.config.Constants.ACTIVE_STATUS;
-import static com.evadeeva.evadeeva.config.Constants.TYPE_PRODUCT;
+import static com.evadeeva.evadeeva.config.Constants.PRODUCT_TYPE;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,9 +37,7 @@ public class ProductServiceImpl implements ProductService {
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
     private final ProductImageRepository productImageRepository;
-
     private final Utils utils;
-
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository,
@@ -88,8 +86,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponse getProductBySize(long sizeId) {
+        Size size = sizeRepository.findById(sizeId).orElseThrow();
+        Color color = size.getColor();
+        Product product = color.getProduct();
+        return productMapper.mapModelToResponse(product);
+    }
+
+    @Override
     public List<ProductResponse> getProductsByCategory(long categoryId, int pageNo, int pageSize, String sortBy) {
-        Category category = categoryRepository.findByStatusAndIdAndType(ACTIVE_STATUS, categoryId, TYPE_PRODUCT);
+        Category category = categoryRepository.findByStatusAndIdAndType(ACTIVE_STATUS, categoryId, PRODUCT_TYPE);
         if (category != null) {
             Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
             Page<Product> products = productRepository.findAllByProductCategoryAndStatus(pageable, category, ACTIVE_STATUS);
@@ -113,15 +119,12 @@ public class ProductServiceImpl implements ProductService {
                 Color color = colorMapper.mapRequestedToModel(colorRequest);
                 color.setSizes(null);
                 Color newColor = colorRepository.save(color);
-                long newColorId = newColor.getId();
-                if (newColorId == 0) {
-                    break;
-                } else {
-                    List<SizeRequest> sizeRequests = colorRequest.getSizes().stream().toList();
-                    for (SizeRequest sizeRequest : sizeRequests) {
-                        sizeRequest.setColorId(newColorId);
-                        Size size = sizeMapper.mapRequestedToModel(sizeRequest);
-                        size.setSold(0);
+                List<SizeRequest> sizeRequests = colorRequest.getSizes().stream().toList();
+                for (SizeRequest sizeRequest : sizeRequests) {
+                    Size size = sizeMapper.mapRequestedToModel(sizeRequest);
+                    size.setSold(0);
+                    size.setColor(newColor);
+                    if (size.getColor() != null) {
                         sizeRepository.save(size);
                     }
                 }
@@ -162,19 +165,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse createProduct(ProductRequest productRequest)  {
-
+        long lastId = -1;
+        try{
+            lastId = productRepository.findNewestId();
+        }catch (Exception ignored){
+        }
         String sku = utils.generateRandomCharacters(2) + String.valueOf(productRequest.getUserId()) +
-                utils.generateRandomCharacters(3) + String.valueOf(productRepository.findNewestId() + 1);
+                utils.generateRandomCharacters(3) + String.valueOf( lastId + 1);
 
         Product product = productMapper.mapRequestedToModel(productRequest);
-
+        product.setColors(null);
         product.setSku(sku);
         // set current date
         Date currentDate = new Date();
         product.setCreatedDate(currentDate);
         product.setModifiedDate(currentDate);
 
-//            product.setVisited(-1);
         product.setStatus(1);
 
         product.setProductImages(null);

@@ -8,5 +8,4 @@ public class SizeRequest {
 
     private int total;
 
-    private Long colorId;
 }

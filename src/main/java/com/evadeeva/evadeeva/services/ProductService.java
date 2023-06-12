@@ -12,8 +12,8 @@ public interface ProductService {
      *
      */
     List<ProductResponse> getProducts(int pageNo, int pageSize, String sortBy);
-
     ProductResponse getProduct(long productId);
+    ProductResponse getProductBySize(long sizeId);
     List<ProductResponse> getProductsByCategory(long categoryId, int pageNo, int pageSize, String sortBy);
     ProductResponse createProduct(ProductRequest productRequest);
 

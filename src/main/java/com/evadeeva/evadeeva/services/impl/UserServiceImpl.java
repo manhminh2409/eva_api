@@ -53,6 +53,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapModelToResponse(userRepository.findByUsername(username));
     }
 
+    @Override
+    public UserResponse getUser(long userId) {
+        return userMapper.mapModelToResponse(userRepository.findById(userId).orElseThrow());
+    }
+
 
     @Override
     @Transactional
